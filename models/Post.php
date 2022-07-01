@@ -8,13 +8,28 @@ class Post
     private string $content;
     private string $author;
 
-    public function __construct()
+    public function __construct($title, $content, $author)
     {
-        $this->title = $_POST['title'];
-        $this->date = new DateTime();
-        $this->content = $_POST['content'];
-        $this->author = $_POST['author'];
+        $this->title = $title;
+        $this->date =  new DateTime('utc');
+        $this->content = $content;
+        $this->author = $author;
     }
 
+    public function getTitle(){
+        return $this->title;
+    }
+
+    public function getDate(){
+        return $this->date;
+    }
+
+    public function getContent(){
+        return $this->content;
+    }
+
+    public function getAuthor(){
+        return $this->author;
+    }
 
 }
