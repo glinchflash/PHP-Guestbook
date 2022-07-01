@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require ('database.txt');
 class PostLoader
 {
     private array $posts = [];
@@ -7,6 +8,7 @@ class PostLoader
 
     public function __construct()
     {
+        //get contents out of the
         $contents = file_get_contents(self::database);
 
         if (!empty($contents)){

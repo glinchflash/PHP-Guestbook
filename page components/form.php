@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
+
 if (isset($_POST['submit'])) {
+    //to handle site defacement attacks
     $title = trim(htmlspecialchars($_POST['title']));
     $content = trim(htmlspecialchars($_POST['content']));
     $author = trim(htmlspecialchars($_POST['author']));
@@ -10,7 +12,10 @@ if (isset($_POST['submit'])) {
     $loader->savePost();
 
     $posts = $loader->getPosts();
+    //sort array top to bottom instead of bottom to top
     $posts = array_reverse($posts);
+
+    //only show the first 20 elements of array (after reverse so the 20 newest)
     $posts = array_slice($posts, 0, 20);
 }
 
@@ -31,7 +36,7 @@ if (isset($_POST['submit'])) {
 <body>
 <div class="container align-items center">
     <div class="col-2  m-auto justify-content center">
-        <form action="../index.php" method="post">
+        <form method="post">
             <div>
                 <label for="author">Name:</label>
                 <input type="text" name="author" id="author"/>
