@@ -1,22 +1,27 @@
 <?php
 declare(strict_types=1);
+require ('models/Post.php');
+require ('models/PostLoader.php');
+require ('models/userInput.php');
+
+$_DIR_ = 'C:\Users\glenn\Desktop\becode\mygithub\PHP-Guestbook\database\database.txt';
+if (!empty(file_get_contents($_DIR_))) {
+    $postloader = new PostLoader();
+    $posts = $postloader->getPosts();
+    var_dump($posts);
+} else {
+    $posts = json_decode('[{"title":"your","date":"show","message":"here","author":"posts"}]');
+}
 
 if (isset($_POST['submit'])) {
-    //to handle site defacement attacks
-    $title = trim(htmlspecialchars($_POST['title']));
-    $content = trim(htmlspecialchars($_POST['content']));
-    $author = trim(htmlspecialchars($_POST['author']));
-
-    $loader = new PostLoader();
-    $loader->addPost($title, $content, $author);
-    $loader->savePost();
-
-    $posts = $loader->getPosts();
-    //sort array top to bottom instead of bottom to top
-    $posts = array_reverse($posts);
-
-    //only show the first 20 elements of array (after reverse so the 20 newest)
-    $posts = array_slice($posts, 0, 20);
+    try {
+        $post = isEmpty();
+        $postloader = new PostLoader();
+        $postloader->savePost($post);
+        $posts = $postloader->getPosts();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
 
 ?>
@@ -54,24 +59,33 @@ if (isset($_POST['submit'])) {
     <div class="guestbook text-center">
         <h3>Guestbook posts</h3>
         <div class="posts">
-            <?php
-
-            if (!empty($posts)) {
-
-                foreach ($posts as $post) {
-                    ?>
-                    <div class="single-post">
-
-                        <p><?php echo $post->getTitle() ?></p>;
-                        <p><?php echo $post->getAuthor() ?></p>;
-                        <p><?php echo $post->getDate() ?></p>;
-                        <p><?php echo $post->getContent() ?></p>;
-
+            <?php if (count($posts)< 20): ?>
+                <?php for ($i=0; $i < count($posts);$i++): ?>
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 style="color:red;" class="card-title"><?= $posts[$i]->{'title'}; ?></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><?= $posts[$i]->{'author'}; ?></h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><?= $posts[$i]->{'date'}; ?></h6>
+                                <p class="card-text"><?= $posts[$i]->{'message'}; ?></p>
+                            </div>
+                        </div>
                     </div>
-                    <?php
-                }
-            }
-            ?>
+                <?php endfor;?>
+            <?php elseif (count($posts) > 20): ?>
+                <?php for ($i=0; $i < 20 ;$i++): ?>
+                    <div class="col-sm-12 col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 style="color:red;" class="card-title"><?= $posts[$i]->{'title'}; ?></h5>
+                                <p class="card-subtitle mb-2 text-muted"><?= $posts[$i]->{'author'}; ?></p>
+                                <p class="card-subtitle mb-2 text-muted"><?= $posts[$i]->{'date'}; ?></p>
+                                <p class="card-text"><?= $posts[$i]->{'message'}; ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endfor;?>
+            <?php endif;?>
         </div>
     </div>
 </div>

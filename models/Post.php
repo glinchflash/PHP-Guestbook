@@ -8,15 +8,15 @@ class Post
     private string $content;
     private string $author;
 
-    public function __construct($title, $content, $author)
+    public function __construct($title,$date, $content, $author)
     {
-        $this->title = $title;
-        $this->date =  new DateTime('utc');
-        $this->content = $content;
-        $this->author = $author;
+        $this->title = htmlspecialchars($title , ENT_QUOTES);
+        $this->date =  $date;
+        $this->content = htmlspecialchars($content , ENT_QUOTES);
+        $this->author = htmlspecialchars($author , ENT_QUOTES);
     }
 
-    public function getTitle(){
+    public function getTitle():string{
         return $this->title;
     }
 
@@ -24,11 +24,11 @@ class Post
         return $this->date;
     }
 
-    public function getContent(){
+    public function getContent():string{
         return $this->content;
     }
 
-    public function getAuthor(){
+    public function getAuthor():string{
         return $this->author;
     }
 

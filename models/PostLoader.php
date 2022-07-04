@@ -1,38 +1,28 @@
 <?php
 declare(strict_types=1);
-require ('database.txt');
+require('database/database.txt');
 class PostLoader
 {
-    private array $posts = [];
-    private const database = 'database.txt';
 
-    public function __construct()
-    {
-        //get contents out of the
-        $contents = file_get_contents(self::database);
+    public function savePost(POST $post):void{
 
-        if (!empty($contents)){
-            $this->posts = unserialize($contents);
-        }
+        $data=[];
+        $data['title']=$post->getTitle();
+        $data['date']=$post->getDate();
+        $data['content']=$post->getContent();
+        $data['author']=$post->getAuthor();
+        $currentFile = json_decode(file_get_contents('C:\Users\glenn\Desktop\becode\mygithub\PHP-Guestbook\database\database.txt'),true);
+        $currentFile[]= $data;
+        $dataJSON = json_encode($currentFile);
+
+        file_put_contents('C:\Users\glenn\Desktop\becode\mygithub\PHP-Guestbook\database\database.txt',$dataJSON);
     }
 
-
-    public function addPost($title, $content, $author):void
-    {
-        $newPost = new Post($title, $content, $author);
-        $this->posts[] = $newPost;
-    }
-
-    public function savePost():void{
-        // Encode the posts array to save it to the database.txt file
-        $encodedPosts = serialize($this->posts); // Converts an array or object to a string representation of the object
-
-        file_put_contents(self::database, $encodedPosts);
-    }
 
     public function getPosts():array
     {
-        return $this->posts;
+        $storedPosts = json_decode(file_get_contents('C:\Users\glenn\Desktop\becode\mygithub\PHP-Guestbook\database\database.txt'));
+        return $storedPosts;
     }
 }
 
