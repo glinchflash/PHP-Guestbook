@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
-require ('models/userInput.php');
-require ('models/Post.php');
-require ('models/PostLoader.php');
-require ('database.txt');
+require('database.txt');
+require('models/Post.php');
+require('models/PostLoader.php');
+require('models/userInput.php');
 
 var_dump($_POST);
 if (!empty(file_get_contents('database.txt'))) {
@@ -63,8 +63,8 @@ if (isset($_POST['submit'])) {
     <div class="guestbook text-center">
         <h3>Guestbook posts</h3>
         <div class="posts">
-            <?php if (count($posts)< 20): ?>
-                <?php for ($i=0; $i < count($posts);$i++): ?>
+            <?php if (count($posts) < 20): ?>
+                <?php for ($i = 0; $i < count($posts); $i++): ?>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <div class="card">
                             <div class="card-body">
@@ -75,9 +75,9 @@ if (isset($_POST['submit'])) {
                             </div>
                         </div>
                     </div>
-                <?php endfor;?>
+                <?php endfor; ?>
             <?php elseif (count($posts) > 20): ?>
-                <?php for ($i=0; $i < 20 ;$i++): ?>
+                <?php for ($i = 0; $i < 20; $i++): ?>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <div class="card">
                             <div class="card-body">
@@ -88,8 +88,8 @@ if (isset($_POST['submit'])) {
                             </div>
                         </div>
                     </div>
-                <?php endfor;?>
-            <?php endif;?>
+                <?php endfor; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>

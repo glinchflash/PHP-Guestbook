@@ -9,12 +9,10 @@ class PostLoader
         $currentFile = file_get_contents ($file);
         $decodedFile = json_decode ($currentFile) ;
         $tempArray = json_decode (json_encode ($decodedFile), true);
-        $postArray = array ('content' => $post->getMessage());
+        $postArray = array ('message' => $post->getMessage());
         $tempArray[] = $postArray;
         $encodedTempArray = json_encode ($tempArray);
         file_put_contents ($file, $encodedTempArray);
-        var_dump($encodedTempArray);
-
     }
 
 
@@ -23,7 +21,7 @@ class PostLoader
         $stdPosts = json_decode (file_get_contents('database.txt')) ;
         $posts = [];
         foreach ($stdPosts as $stdPost) {
-            $posts[] = new Post($stdPost->title, $stdPost->date, $stdPost->content,  $stdPost->author);
+            $posts[] = new Post($stdPost->title, $stdPost->date, $stdPost->message,  $stdPost->author);
         }
         return $posts;
 
