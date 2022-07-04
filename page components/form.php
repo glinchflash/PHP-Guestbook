@@ -5,25 +5,29 @@ require('models/Post.php');
 require('models/PostLoader.php');
 require('models/userInput.php');
 
-var_dump($_POST);
+//var_dump($_POST);
 if (!empty(file_get_contents('database.txt'))) {
     $postLoaderInit = new PostLoader();
     $posts = $postLoaderInit->getPosts();
 } else {
-    $posts = json_decode('[{"title":"your","date":"show","message":"here","author":"posts"}]');
+    $posts = json_decode('[{"title":"your","author":"posts", "date":"show","message":"here"}]');
 }
 
 if (isset($_POST['submit'])) {
-    try {
-        $post = checkInput();
+
+    $errors = checkInput();
+
+    if (empty($errors)){
+        $post = new Post($_POST['title'], $_POST['message'], $_POST['author']);
         $postLoader = new PostLoader();
         $postLoader->savePost($post);
         $posts = $postLoader->getPosts();
-    } catch (Exception $e) {
-        echo $e->getMessage();
+    } else {
+        for ($i = 0; $i < count($errors); $i++){
+            echo $errors[$i].'<br>';
+        }
     }
 }
-
 ?>
 
 
@@ -56,7 +60,7 @@ if (isset($_POST['submit'])) {
                 <label for="message">Message:</label>
                 <textarea name="message" id="message" cols="30" rows="10"></textarea>
 
-                <button type="submit" class="btn btn-dark ">Submit</button>
+                <button type="submit" name ="submit" class="btn btn-dark ">Submit</button>
             </div>
         </form>
     </div>

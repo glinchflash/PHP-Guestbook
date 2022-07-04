@@ -4,14 +4,14 @@ declare(strict_types=1);
 class Post
 {
     private string $title;
-    private DateTime $date;
+    private string $date;
     private string $message;
     private string $author;
 
-    public function __construct($title,$date, $message, $author)
+    public function __construct($title, $message, $author)
     {
         $this->title = htmlspecialchars($title , ENT_QUOTES);
-        $this->date =  $date;
+        $this->date =  date("d/m/Y");
         $this->message = htmlspecialchars($message , ENT_QUOTES);
         $this->author = htmlspecialchars($author , ENT_QUOTES);
     }
@@ -25,7 +25,7 @@ class Post
         return $this->date;
     }
 
-    public function getMessage():string{
+    public function getContent():string{
         return $this->message;
     }
 
