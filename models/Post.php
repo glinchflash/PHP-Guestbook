@@ -5,14 +5,14 @@ class Post
 {
     private string $title;
     private DateTime $date;
-    private string $content;
+    private string $message;
     private string $author;
 
-    public function __construct($title,$date, $content, $author)
+    public function __construct($title,$date, $message, $author)
     {
         $this->title = htmlspecialchars($title , ENT_QUOTES);
         $this->date =  $date;
-        $this->content = htmlspecialchars($content , ENT_QUOTES);
+        $this->message = htmlspecialchars($message , ENT_QUOTES);
         $this->author = htmlspecialchars($author , ENT_QUOTES);
     }
 
@@ -20,12 +20,13 @@ class Post
         return $this->title;
     }
 
-    public function getDate(){
+    public function getDate(): DateTime
+    {
         return $this->date;
     }
 
-    public function getContent():string{
-        return $this->content;
+    public function getMessage():string{
+        return $this->message;
     }
 
     public function getAuthor():string{

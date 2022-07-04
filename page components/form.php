@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
+require ('models/userInput.php');
 require ('models/Post.php');
 require ('models/PostLoader.php');
-require ('models/userInput.php');
+require ('database.txt');
 
-$_DIR_ = 'C:\Users\glenn\Desktop\becode\mygithub\PHP-Guestbook\database\database.txt';
-if (!empty(file_get_contents($_DIR_))) {
-    $postloader = new PostLoader();
-    $posts = $postloader->getPosts();
-    var_dump($posts);
+var_dump($_POST);
+if (!empty(file_get_contents('database.txt'))) {
+    $postLoaderInit = new PostLoader();
+    $posts = $postLoaderInit->getPosts();
 } else {
     $posts = json_decode('[{"title":"your","date":"show","message":"here","author":"posts"}]');
 }
 
 if (isset($_POST['submit'])) {
     try {
-        $post = isEmpty();
-        $postloader = new PostLoader();
-        $postloader->savePost($post);
-        $posts = $postloader->getPosts();
+        $post = checkInput();
+        $postLoader = new PostLoader();
+        $postLoader->savePost($post);
+        $posts = $postLoader->getPosts();
     } catch (Exception $e) {
         echo $e->getMessage();
     }
@@ -39,6 +39,10 @@ if (isset($_POST['submit'])) {
     <title>Guestbook PHP</title>
 </head>
 <body>
+<header class="text-center">
+    <h1>Welcome to our guestbook!</h1>
+    <p>Feel free to leave a message!</p>
+</header>
 <div class="container align-items center">
     <div class="col-2  m-auto justify-content center">
         <form method="post">
@@ -49,8 +53,8 @@ if (isset($_POST['submit'])) {
                 <label for="title">Title:</label>
                 <input type="text" name="title" id="title"/>
 
-                <label for="content">Message:</label>
-                <textarea name="content" id="content" cols="30" rows="10"></textarea>
+                <label for="message">Message:</label>
+                <textarea name="message" id="message" cols="30" rows="10"></textarea>
 
                 <button type="submit" class="btn btn-dark ">Submit</button>
             </div>
@@ -65,8 +69,8 @@ if (isset($_POST['submit'])) {
                         <div class="card">
                             <div class="card-body">
                                 <h5 style="color:red;" class="card-title"><?= $posts[$i]->{'title'}; ?></h5>
-                                <h6 class="card-subtitle mb-2 text-muted"><?= $posts[$i]->{'author'}; ?></h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><?= $posts[$i]->{'date'}; ?></h6>
+                                <p class="card-subtitle mb-2 text-muted"><?= $posts[$i]->{'author'}; ?></p>
+                                <p class="card-subtitle mb-2 text-muted"><?= $posts[$i]->{'date'}; ?></p>
                                 <p class="card-text"><?= $posts[$i]->{'message'}; ?></p>
                             </div>
                         </div>
